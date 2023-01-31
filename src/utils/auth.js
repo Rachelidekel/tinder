@@ -6,14 +6,14 @@ const customFetch = (url, headers) => {
   );
 };
 
-export const register = ({fullName, phone, profilePicture}) => {
+export const register = ({fullName, birthDate, phone, profilePicture}) => {
   return customFetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ fullName, phone, profilePicture }),
+    body: JSON.stringify({ fullName, birthDate, phone, profilePicture }),
   });
 };
 

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
-//import Main from "./Main";
+import Main from "./Main";
 import Footer from "./Footer";
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-//import EditProfilePopup from "./EditProfilePopup";
-//import EditAvatarPopup from "./EditAvatarPopup";
-//import AddPlacePopup from "./AddPlacePopup";
-//import DeletePopupForm from "./DeletePopupForm";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
@@ -16,13 +12,7 @@ import * as auth from "../utils/auth";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  //const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-  //const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  //const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
- 
   //const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
- 
-  //const [isLoading, setIsLoading] = useState(false);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -66,32 +56,18 @@ function App() {
     //setIsEditProfilePopupOpen(true);
   //}
 
-
-
- // function closeAllPopups() {
-    //setIsAddPlacePopupOpen(false);
-    //setIsEditAvatarPopupOpen(false);
-    //setIsEditProfilePopupOpen(false);
-    //setIsImagePreviewOpen(false);
-    //setIsDeletePopupOpen(false);
-    //setIsInfoTooltipOpen(false);
-  //}
-
   //function handleDeleteClick(card) {
     //setIsDeletePopupOpen(true);
     //setSelectedCard(card);
   //}
 
-  function handleUpdateUser({ fullName, phone, profilePicture }) {
-    setIsLoading(true);
+  function handleUpdateUser({ fullName, birthDate, phone, profilePicture }) {
     api
-      .setUserInfo({ fullName, phone, profilePicture }, token)
+      .setUserInfo({ fullName, birthDate, phone, profilePicture }, token)
       .then((data) => {
         setCurrentUser(data);
-        closeAllPopups();
       })
       .catch(console.log)
-      .finally(() => setIsLoading(false));
   }
 
   //function handleUpdateAvatar(avatar) {
@@ -121,12 +97,12 @@ function App() {
 
      // .catch(console.log)
      // .finally(() => setIsLoading(false));
-  }
+ // }
 
 
-  function onRegister({ fullName, phone, profilePicture }) {
+  function onRegister({ fullName, birthDate, phone, profilePicture }) {
     auth
-      .register({fullName, phone, profilePicture})
+      .register({fullName, birthDate, phone, profilePicture})
       .then((res) => {
         if (res._id) {
           history.push("/signin");
@@ -169,15 +145,7 @@ function App() {
         <Header fullName={fullName} onLogOut={onLogOut} />
         <Switch>
           <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
-            <Main
-              //cards={cards}
-              //onEditProfileClick={handleEditProfileClick}
-              //onAddPlaceClick={handleAddPlaceClick}
-              //onEditAvatarClick={handleEditAvatarClick}
-              //onCardClick={handleCardClick}
-              //onDeleteClick={handleDeleteClick}
-              //onCardLike={handleCardLike}
-            />
+            <Main />
           </ProtectedRoute>
           <Route path="/signup">
             <Register onRegister={onRegister} />
@@ -193,6 +161,6 @@ function App() {
       </div>
     </CurrentUserContext.Provider>
   );
-
+  }
 
 export default App;

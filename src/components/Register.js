@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 function Register({ onRegister }) {
   const [fullName, setFullName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [phone, setPhone] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
 
@@ -10,6 +11,7 @@ function Register({ onRegister }) {
     e.preventDefault();
     const userData = {
       fullName,
+      birthDate,
       phone,
       profilePicture,
     };
@@ -20,6 +22,10 @@ function Register({ onRegister }) {
     <div className="auth__wrapper">
       <h3 className="auth__title">Sign up</h3>
       <form className="auth__form" onSubmit={handleSubmit}>
+        <p>
+        <label>
+          Full Name
+          </label>
         <input
           type="name"
           name="name"
@@ -27,9 +33,29 @@ function Register({ onRegister }) {
           id="auth__name"
           value={fullName || ""}
           onChange={(e) => setFullName(e.target.value)}
-          placeholder="FullName"
           required
         />
+        </p>
+        <p>
+        <label>
+          Birth Date
+          </label>
+        <input
+          type="date"
+          name="date"
+          className="auth__input"
+          id="auth__birthdate"
+          value={birthDate || ""}
+          onChange={(e) => setBirthDate(e.target.value)}
+          minLength="2"
+          maxLength="30"
+          required
+        />
+        </p>
+        <p>
+        <label>
+          Phone
+          </label>
         <input
           type="phone"
           name="phone"
@@ -37,23 +63,27 @@ function Register({ onRegister }) {
           id="auth__phone"
           value={phone || ""}
           onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone"
           minLength="2"
           maxLength="30"
           required
         />
-         <input
+        </p>
+        <p>
+        <label>
+        Picture
+        </label>
+        <input
           type="picture"
           name="picture"
           className="auth__input"
           id="auth__picture"
-          value={picture || ""}
+          value={profilePicture || ""}
           onChange={(e) => setProfilePicture(e.target.value)}
-          placeholder="Picture"
           minLength="2"
           maxLength="50"
           required
         />
+        </p>
         <button className="auth__button" type="submit">
           Sign up
         </button>

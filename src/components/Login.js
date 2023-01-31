@@ -16,6 +16,10 @@ function Login({ onLogIn }) {
     <div className="auth__wrapper">
       <h3 className="auth__title">Log in</h3>
       <form className="auth__form" onSubmit={handleSubmit}>
+        <p>
+        <label>
+          Full Name
+          </label>
         <input
           type="name"
           name="name"
@@ -23,9 +27,10 @@ function Login({ onLogIn }) {
           id="auth__name"
           value={fullName || ""}
           onChange={(e) => setFullName(e.target.value)}
-          placeholder="FullName"
           required
         />
+        </p>
+      
         <button className="auth__button" type="submit">
           Log in
         </button>
