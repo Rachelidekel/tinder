@@ -2,10 +2,7 @@
   max-width: 1280px;
   margin: 0 auto;
   margin-top: 60px;
-  background-image: url("../images/backeground.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  object-fit: cover;
+  min-height: 500px;
 }
 
 .auth__title {
@@ -26,6 +23,7 @@
   border: none;
   display: flex;
   flex-direction: column;
+
 }
 
 p {
@@ -61,9 +59,8 @@ label:after {
   border-top: none;
   border-right: none;
   border-left: none;
-  width: 250px;
+  width: 280px;
   outline: none;
-  color: #ffffff;
 }
 
 .auth__input:first-child {
@@ -100,7 +97,7 @@ label:after {
   font-weight: 400;
   line-height: 17px;
   letter-spacing: 0em;
-  text-align: center;
+  text-align: left;
   color: #ffffff;
   transition: opacity 0.3s ease-in-out;
   text-decoration: none;

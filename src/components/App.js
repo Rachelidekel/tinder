@@ -3,17 +3,20 @@ import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import api from "../utils/api";
+import api from "../utils/MainApi";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
-import * as auth from "../utils/auth";
+//import * as location from "../utils/LocationApi";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   //const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
+  const [persons, setPersons] = useState("")
+  const [personLocation, setPersonLocation] = useState("")
+  const [selectedPerson, setSelectedPerson] = useState({fullName: "", birthDate: "", phone:"", profilePicture:""})
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
   const [token, setToken] = useState(localStorage.getItem("jwt"));
@@ -22,7 +25,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      auth
+      api
         .checkToken(token)
         .then((res) => {
           if (res) {
@@ -42,20 +45,12 @@ function App() {
       .getUserInfo(token)
       .then((res) => {
         setCurrentUser(res.user);
+        setPersonLocation(res.user);
       })
       .catch(console.log);
   }, [token]);
 
  
-
-  //function handleEditAvatarClick() {
-    //setIsEditAvatarPopupOpen(true);
-  //}
-
-  //function handleEditProfileClick() {
-    //setIsEditProfilePopupOpen(true);
-  //}
-
   //function handleDeleteClick(card) {
     //setIsDeletePopupOpen(true);
     //setSelectedCard(card);
@@ -70,38 +65,23 @@ function App() {
       .catch(console.log)
   }
 
-  //function handleUpdateAvatar(avatar) {
+  
+  function handlePersonDelete(e) {
+    e.preventDefault();
     //setIsLoading(true);
-    //api
-     // .setUserAvatar(avatar, token)
-      //.then((data) => {
-       // setCurrentUser(data);
-        //closeAllPopups();
-      //})
-      //.catch(console.log)
-     // .finally(() => setIsLoading(false));
- // }
-
-
-  //function handleCardDelete(e) {
-    //e.preventDefault();
-    //setIsLoading(true);
-   // api
-      //.deleteCard(selectedCard._id, token)
-      //.then(() => {
-        //setCards((cards) =>
-          //cards.filter((currentCard) => currentCard._id !== selectedCard._id)
-        //);
-        //closeAllPopups();
-      //})
-
-     // .catch(console.log)
-     // .finally(() => setIsLoading(false));
- // }
+    api
+      .deletePerson(selectedPerson._id, token)
+      .then(() => {
+        setPersons((persons) =>
+          persons.filter((currentUser) => currentUser._id !== selectedPerson._id)
+        );
+      })
+      .catch(console.log)
+  }
 
 
   function onRegister({ fullName, birthDate, phone, profilePicture }) {
-    auth
+    api
       .register({fullName, birthDate, phone, profilePicture})
       .then((res) => {
         if (res._id) {
@@ -113,11 +93,9 @@ function App() {
       });
   }
 
-
-
-  function onLogIn( fullName ) {
-    auth
-      .login(fullName)
+  function onLogIn( {fullName} ) {
+    api
+      .login({fullName})
       .then((res) => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
@@ -145,7 +123,9 @@ function App() {
         <Header fullName={fullName} onLogOut={onLogOut} />
         <Switch>
           <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
-            <Main />
+            <Main
+            onDelete={handlePersonDelete} 
+            />
           </ProtectedRoute>
           <Route path="/signup">
             <Register onRegister={onRegister} />

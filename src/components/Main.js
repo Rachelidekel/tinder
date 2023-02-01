@@ -1,10 +1,8 @@
-import userEvent from "@testing-library/user-event";
 import React from "react";
-//import pen from "../images/Vector_pen.svg";
-//import plus from "../images/Vector_plus.svg";
+import trush from "../images/trash_icon.svg"
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-function Main({
+function Main({ onDelete
  
 }) {
   const currentUser = React.useContext(CurrentUserContext);
@@ -27,6 +25,7 @@ function Main({
               <td>{currentUser.phone}</td>
               <td>{currentUser.profilePicture}</td>
               <td>{currentUser.location}</td>
+              <td><img className="persons_locations-delete" src={trush} alt="icon of trush bin" onDelete={onDelete}/></td>
             </tr>
         </table>
         </div>

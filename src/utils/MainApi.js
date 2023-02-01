@@ -10,9 +10,42 @@ class Api {
     );
   };
 
-  
-  getUserInfo(token) {
+   register = ({fullName, birthDate, phone, profilePicture}) => {
+    return this._customFetch(`${this._baseUrl}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fullName, birthDate, phone, profilePicture }),
+    });
+  };
+
+  login = ({fullName}) => {
+    return this._customFetch(`${this._baseUrl}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fullName }),
+    });
+  };
+
+  checkToken = (token) => {
     return this._customFetch(`${this._baseUrl}/users/me`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
+
+  getUserInfo(token) {
+    return this._customFetch(`${this._baseUrl}/`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -21,7 +54,7 @@ class Api {
   }
 
   setUserInfo({ fullName, phone, profilePicture }, token) {
-    return this._customFetch(`${this._baseUrl}/users/me`, {
+    return this._customFetch(`${this._baseUrl}/me`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -35,7 +68,6 @@ class Api {
     });
   }
 
- 
   createUser(data, token) {
     return this._customFetch(`${this._baseUrl}/`, {
       headers: {
@@ -46,16 +78,15 @@ class Api {
       body: JSON.stringify({
         birthDate: data.birthDate,
         fullName: data.fullName,
-        locationLatitude: data.locationLatitude,
-        locationLongitude: data.locationLongitude,
+        location: data.location,
         phone: data.phone,
         profilePicture: data.profilePicture
       }),
     });
   }
 
-  getPersonsByDistance(distance) {
-    return this._customFetch(`${this._baseUrl}/` + distance, {
+  getPersonsByDistance({byDistance}) {
+    return this._customFetch(`${this._baseUrl}/ ${byDistance}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -64,7 +95,7 @@ class Api {
   }
 
   deletePerson(personId, token) {
-    return this._customFetch(`${this._baseUrl}/persons/${personId}`, {
+    return this._customFetch(`${this._baseUrl}/${personId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -88,7 +119,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "http://localhost:8080",
+baseUrl: "http://localhost:8080/api/persons",
+  //baseUrl: "https://www.gps-coordinates.net/my-location",
 });
 
 export default api;
