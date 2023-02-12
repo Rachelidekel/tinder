@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
-import Header from "./Header";
-import Main from "./Main";
-import Footer from "./Footer";
-import api from "../utils/MainApi";
-import CurrentUserContext from "../contexts/CurrentUserContext";
-import Login from "./Login";
-import Register from "./Register";
-import ProtectedRoute from "./ProtectedRoute";
+import Header from "../Header";
+import Main from "../Main";
+import Footer from "../Footer";
+import api from "../../utils/MainApi";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import Login from "../Login";
+import Register from "../Register";
+import ProtectedRoute from "../ProtectedRoute";
 //import * as location from "../utils/LocationApi";
 
 function App() {
@@ -20,6 +20,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
   const [token, setToken] = useState(localStorage.getItem("jwt"));
+
+  const [km, setKm] = useState("");
 
   const history = useHistory();
 
@@ -51,6 +53,14 @@ function App() {
   }, [token]);
 
  
+//useEffect(() =>{
+//location
+//.getCurrentPosition()
+//.then((res) =>{
+  //setPersonLocation(res.user)
+//})
+//}, [])
+
   //function handleDeleteClick(card) {
     //setIsDeletePopupOpen(true);
     //setSelectedCard(card);
@@ -68,7 +78,7 @@ function App() {
   
   function handlePersonDelete(e) {
     e.preventDefault();
-    //setIsLoading(true);
+    setIsLoading(true);
     api
       .deletePerson(selectedPerson._id, token)
       .then(() => {
@@ -110,6 +120,40 @@ function App() {
         console.log(err)
       });
   }
+
+  function handleSearchSubmit(km) {
+    setIsSearchResultOpen(false);
+    setIsNothingFoundOpen(false);
+    arrayForHoldingCards = [];
+    setIsPreloaderOpen(true);
+
+    setIsReceivingError(false);
+    setKm(keyword);
+
+    newsApi
+      .getNews(keyword)
+      .then((cards) => {
+        setIsPreloaderOpen(false);
+        if (cards.totalResults !== 0) {
+          setIsSearchResultOpen(true);
+          setCards(cards.articles);
+        } else if (cards.totalResults === 0) {
+          setIsNothingFoundOpen(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsReceivingError(true);
+      });
+  }
+
+
+
+
+
+
+
+
 
   function onLogOut() {
     localStorage.removeItem("jwt");

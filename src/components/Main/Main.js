@@ -1,6 +1,6 @@
 import React from "react";
 import trush from "../images/trash_icon.svg"
-import CurrentUserContext from "../contexts/CurrentUserContext";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Main({ onDelete
  

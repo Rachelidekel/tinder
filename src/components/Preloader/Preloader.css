@@ -1,0 +1,84 @@
+.preloader {
+    padding: 80px 0;
+    width: 100%;
+    background-color: #f5f6f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .preloader__circle-box {
+    height: 50px;
+    width: 50px;
+    position: relative;
+  }
+  
+  .preloader__circle-animation {
+    display: block;
+    width: 74px;
+    height: 74px;
+    border: 1px solid #d1d2d6;
+    border-bottom-color: #1a1b22;
+    border-radius: 50%;
+    position: absolute;
+    top: 26px;
+    left: -18px;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  
+    animation: spin 1s infinite linear;
+  }
+  
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .preloader__text {
+    margin: 0;
+    margin-top: 50px;
+    color: #b6bcbf;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.3;
+  }
+  
+  @media screen and (max-width: 1106px) {
+    .preloader {
+      padding: 40px 0;
+    }
+  
+    .preloader__circle-animation {
+      width: 60px;
+      height: 60px;
+  
+      top: 26px;
+      left: -10px;
+    }
+  
+    .preloader__text {
+      margin-top: 40px;
+      font-size: 16px;
+    }
+  }
+  
+  @media screen and (max-width: 766px) {
+    .preloader {
+      padding: 20px 0;
+    }
+  
+    .preloader__circle-animation {
+      width: 50px;
+      height: 50px;
+  
+      top: 26px;
+      left: -10px;
+    }
+  
+    .preloader__text {
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  }

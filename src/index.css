@@ -1,8 +1,9 @@
 @import url("./vendor/normalize.css");
 @import url("./vendor/fonts/font.css");
-@import url("./blocks/body.css");
 @import url("./blocks/page.css");
-@import url("./blocks/header.css");
-@import url("./blocks/logo.css");
-@import url("./blocks/auth.css");
-@import url("./blocks/footer.css");
+@import url("./components/App/App.css");
+@import url("./components/Header/Header.css");
+@import url("./components/Login/Login.css");
+@import url("./components/Main/Main.css");
+@import url("./components/Preloader/Preloader.css");
+@import url("./components/Footer/Footer.css");
