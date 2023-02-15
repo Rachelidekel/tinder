@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Route, Link } from "react-router-dom";
-import logo from "../images/earth-logo.png";
+import logo from "../../images/earth-logo.png";
 
 function Header({ onLogOut, fullName }) {
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);

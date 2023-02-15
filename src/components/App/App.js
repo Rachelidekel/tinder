@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
-import Header from "../Header";
-import Main from "../Main";
-import Footer from "../Footer";
+import Header from "../Header/Header";
+import Main from "../Main/Main";
+import Footer from "../Footer/Footer";
 import api from "../../utils/MainApi";
+import { sucessfulLookup } from "../../utils/LocationApi";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import Login from "../Login";
-import Register from "../Register";
+import Login from "../Login/Login";
+import Register from "../Register/Register";
 import ProtectedRoute from "../ProtectedRoute";
-//import * as location from "../utils/LocationApi";
+//import Preloader from "../Preloader/Preloader";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   //const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
-  const [persons, setPersons] = useState("")
-  const [personLocation, setPersonLocation] = useState("")
-  const [selectedPerson, setSelectedPerson] = useState({fullName: "", birthDate: "", phone:"", profilePicture:""})
+  const [persons, setPersons] = useState("");
+  const [personLocation, setPersonLocation] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState({
+    fullName: "",
+    birthDate: "",
+    phone: "",
+    profilePicture: "",
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
   const [token, setToken] = useState(localStorage.getItem("jwt"));
@@ -31,7 +37,7 @@ function App() {
         .checkToken(token)
         .then((res) => {
           if (res) {
-            setFullName(res.user.fullName);
+            setFullName(res.fullName);
             setIsLoggedIn(true);
             history.push("/");
           } else {
@@ -46,24 +52,23 @@ function App() {
     api
       .getUserInfo(token)
       .then((res) => {
-        setCurrentUser(res.user);
-        setPersonLocation(res.user);
+        setSelectedPerson(res);
+        setPersonLocation(res);
       })
       .catch(console.log);
   }, [token]);
 
- 
-//useEffect(() =>{
-//location
-//.getCurrentPosition()
-//.then((res) =>{
+  //useEffect(() =>{
+  //location
+  //.getCurrentPosition()
+  //.then((res) =>{
   //setPersonLocation(res.user)
-//})
-//}, [])
+  //})
+  //}, [])
 
   //function handleDeleteClick(card) {
-    //setIsDeletePopupOpen(true);
-    //setSelectedCard(card);
+  //setIsDeletePopupOpen(true);
+  //setSelectedCard(card);
   //}
 
   function handleUpdateUser({ fullName, birthDate, phone, profilePicture }) {
@@ -72,40 +77,40 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
       })
-      .catch(console.log)
+      .catch(console.log);
   }
 
-  
   function handlePersonDelete(e) {
     e.preventDefault();
-    setIsLoading(true);
+    //setIsLoading(true);
     api
       .deletePerson(selectedPerson._id, token)
       .then(() => {
         setPersons((persons) =>
-          persons.filter((currentUser) => currentUser._id !== selectedPerson._id)
+          persons.filter(
+            (currentUser) => currentUser._id !== selectedPerson._id
+          )
         );
       })
-      .catch(console.log)
+      .catch(console.log);
   }
-
 
   function onRegister({ fullName, birthDate, phone, profilePicture }) {
     api
-      .register({fullName, birthDate, phone, profilePicture})
+      .register({ fullName, birthDate, phone, profilePicture })
       .then((res) => {
         if (res._id) {
           history.push("/signin");
-        } 
+        }
       })
       .catch((err) => {
-       console.log(err)
+        console.log(err);
       });
   }
 
-  function onLogIn( {fullName} ) {
+  function onLogIn({ fullName }) {
     api
-      .login({fullName})
+      .login({ fullName })
       .then((res) => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
@@ -117,43 +122,44 @@ function App() {
         } 
       })
       .catch((err) => {
-        console.log(err)
-      });
-  }
-
-  function handleSearchSubmit(km) {
-    setIsSearchResultOpen(false);
-    setIsNothingFoundOpen(false);
-    arrayForHoldingCards = [];
-    setIsPreloaderOpen(true);
-
-    setIsReceivingError(false);
-    setKm(keyword);
-
-    newsApi
-      .getNews(keyword)
-      .then((cards) => {
-        setIsPreloaderOpen(false);
-        if (cards.totalResults !== 0) {
-          setIsSearchResultOpen(true);
-          setCards(cards.articles);
-        } else if (cards.totalResults === 0) {
-          setIsNothingFoundOpen(true);
-        }
-      })
-      .catch((err) => {
         console.log(err);
-        setIsReceivingError(true);
       });
   }
 
+  const error = () => {
+    console.log("Unable to retrieve your location");
+  };
+
+  function getLocation() {
+    navigator.geolocation.getCurrentPosition(sucessfulLookup, error);
+  }
 
 
+  //function handleSearchSubmit(km) {
+  // setIsSearchResultOpen(false);
+  //setIsNothingFoundOpen(false);
+  //arrayForHoldingPersons = [];
+  // setIsPreloaderOpen(true);
 
+  //setIsReceivingError(false);
+  //setKm(km);
 
-
-
-
+  // locationApi
+  // .getPersons(km)
+  // .then((persons) => {
+  // setIsPreloaderOpen(false);
+  //if (cards.totalResults !== 0) {
+  // setIsSearchResultOpen(true);
+  // setPersons(persons.info);
+  //} else if (persons.totalResults === 0) {
+  //setIsNothingFoundOpen(true);
+  // }
+  //})
+  //.catch((err) => {
+  // console.log(err);
+  //setIsReceivingError(true);
+  // });
+  //}
 
   function onLogOut() {
     localStorage.removeItem("jwt");
@@ -167,24 +173,22 @@ function App() {
         <Header fullName={fullName} onLogOut={onLogOut} />
         <Switch>
           <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
-            <Main
-            onDelete={handlePersonDelete} 
-            />
+            <Main onDelete={handlePersonDelete} />
           </ProtectedRoute>
           <Route path="/signup">
             <Register onRegister={onRegister} />
           </Route>
           <Route path="/signin">
-            <Login onLogIn={onLogIn} />
+            <Login onLogIn={onLogIn} getLocation={getLocation}/>
           </Route>
           <Route>
             {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
           </Route>
         </Switch>
-        <Footer /> 
+        <Footer />
       </div>
     </CurrentUserContext.Provider>
   );
-  }
+}
 
 export default App;

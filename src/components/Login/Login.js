@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Login({ onLogIn }) {
+function Login({ onLogIn, getLocation }) {
   const [fullName, setFullName] = useState("");
   
   function handleSubmit(e) {
@@ -10,6 +10,7 @@ function Login({ onLogIn }) {
       fullName
     };
     onLogIn(userData);
+    getLocation()
   }
 
   return (

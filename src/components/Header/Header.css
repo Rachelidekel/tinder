@@ -94,7 +94,7 @@
     width: 24px;
     height: 20px;
     background-color: rgba(0, 0, 0, 0);
-    background-image: url(../images/hamburger-menu-icon.svg);
+    background-image: url(../../images/hamburger-menu-icon.svg);
     background-position: center;
     border: none;
     padding: 0;
@@ -107,7 +107,7 @@
   }
   
   .header__close-button {
-    background-image: url(../images/header__close_icon.svg);
+    background-image: url(../../images/header__close_icon.svg);
     width: 30px;
     height: 30px;
     color: #ffffff;

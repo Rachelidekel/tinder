@@ -23,6 +23,7 @@
   border: none;
   display: flex;
   flex-direction: column;
+
 }
 
 p {
@@ -60,7 +61,6 @@ label:after {
   border-left: none;
   width: 280px;
   outline: none;
-  padding-left: 10px;
 }
 
 .auth__input:first-child {

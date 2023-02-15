@@ -10,7 +10,7 @@ class Api {
     );
   };
 
-   register = ({fullName, birthDate, phone, profilePicture}) => {
+  register = ({ fullName, birthDate, phone, profilePicture }) => {
     return this._customFetch(`${this._baseUrl}`, {
       method: "POST",
       headers: {
@@ -21,7 +21,7 @@ class Api {
     });
   };
 
-  login = ({fullName}) => {
+  login = ({ fullName }) => {
     return this._customFetch(`${this._baseUrl}`, {
       method: "POST",
       headers: {
@@ -43,7 +43,6 @@ class Api {
     });
   };
 
-
   getUserInfo(token) {
     return this._customFetch(`${this._baseUrl}/`, {
       headers: {
@@ -53,8 +52,8 @@ class Api {
     });
   }
 
-  setUserInfo({ fullName, phone, profilePicture }, token) {
-    return this._customFetch(`${this._baseUrl}/me`, {
+  setUserInfo({ fullName, birthDate, phone, profilePicture }, token) {
+    return this._customFetch(`${this._baseUrl}/id/location`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -62,6 +61,7 @@ class Api {
       method: "PATCH",
       body: JSON.stringify({
         fullName: fullName,
+        birthDate: birthDate,
         phone: phone,
         profilePicture: profilePicture,
       }),
@@ -80,12 +80,12 @@ class Api {
         fullName: data.fullName,
         location: data.location,
         phone: data.phone,
-        profilePicture: data.profilePicture
+        profilePicture: data.profilePicture,
       }),
     });
   }
 
-  getPersonsByDistance({byDistance}) {
+  getPersonsByDistance({ byDistance }) {
     return this._customFetch(`${this._baseUrl}/ ${byDistance}`, {
       headers: {
         "Content-Type": "application/json",
@@ -94,8 +94,8 @@ class Api {
     });
   }
 
-  deletePerson(personId, token) {
-    return this._customFetch(`${this._baseUrl}/${personId}`, {
+  deletePerson(id, token) {
+    return this._customFetch(`${this._baseUrl}/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -103,24 +103,10 @@ class Api {
       method: "DELETE",
     });
   }
-
- 
-
-  //setUserAvatar({ profilePicture }, token) {
-    //return this._customFetch(`${this._baseUrl}/users/me/profilePicture`, {
-      //headers: {
-        //"Content-Type": "application/json",
-        //Authorization: `Bearer ${token}`,
-      //},
-      //method: "PATCH",
-     // body: JSON.stringify({ profilePicture }),
-   // });
- // }
 }
 
 const api = new Api({
-baseUrl: "http://localhost:8080/api/persons",
-  //baseUrl: "https://www.gps-coordinates.net/my-location",
+  baseUrl: "http://localhost:8080/api/persons",
 });
 
 export default api;
