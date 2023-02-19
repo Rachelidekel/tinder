@@ -21,69 +21,33 @@ class Api {
     });
   };
 
-  login = ({ fullName }) => {
+  login = ({ fullName, birthDate, phone, profilePicture }) => {
     return this._customFetch(`${this._baseUrl}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ fullName }),
-    });
-  };
-
-  checkToken = (token) => {
-    return this._customFetch(`${this._baseUrl}/users/me`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
-  getUserInfo(token) {
-    return this._customFetch(`${this._baseUrl}/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  }
-
-  setUserInfo({ fullName, birthDate, phone, profilePicture }, token) {
-    return this._customFetch(`${this._baseUrl}/id/location`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
       method: "PATCH",
-      body: JSON.stringify({
-        fullName: fullName,
-        birthDate: birthDate,
-        phone: phone,
-        profilePicture: profilePicture,
-      }),
-    });
-  }
-
-  createUser(data, token) {
-    return this._customFetch(`${this._baseUrl}/`, {
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
-        Authoriztion: `Bearer ${token}`,
       },
-      method: "POST",
-      body: JSON.stringify({
-        birthDate: data.birthDate,
-        fullName: data.fullName,
-        location: data.location,
-        phone: data.phone,
-        profilePicture: data.profilePicture,
-      }),
+      body: JSON.stringify({ fullName, birthDate, phone, profilePicture }),
     });
-  }
+  };
+
+  //createUser(data, token) {
+  //return this._customFetch(`${this._baseUrl}/`, {
+  // headers: {
+  //"Content-Type": "application/json",
+  // Authoriztion: `Bearer ${token}`,
+  //},
+  // method: "POST",
+  //body: JSON.stringify({
+  // birthDate: data.birthDate,
+  //fullName: data.fullName,
+  //location: data.location,
+  //phone: data.phone,
+  // profilePicture: data.profilePicture,
+  //}),
+  //});
+  //}
 
   getPersonsByDistance({ byDistance }) {
     return this._customFetch(`${this._baseUrl}/ ${byDistance}`, {

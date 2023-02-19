@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Route, Link } from "react-router-dom";
 import logo from "../../images/earth-logo.png";
 
-function Header({ onLogOut, fullName }) {
+function Header({  fullName }) {
   const [isHeaderMenuOpen, setIsHeaderMenuOpen] = useState(false);
 
   function handleMenuClick() {
@@ -11,7 +11,6 @@ function Header({ onLogOut, fullName }) {
 
   function handleLogOut() {
     setIsHeaderMenuOpen(false);
-    onLogOut();
   }
 
   return (
@@ -24,7 +23,7 @@ function Header({ onLogOut, fullName }) {
         }
       >
         <p className="header__user-name">{fullName}</p>
-        <button className="header__logout" onClick={handleLogOut}>
+        <button className="header__logout" >
           Log out
         </button>
       </div>
@@ -42,7 +41,7 @@ function Header({ onLogOut, fullName }) {
             ></button>
             <div className="header__wrapper-desktop">
               <p className="header__user-name">{fullName}</p>
-              <button className="header__logout" onClick={handleLogOut}>
+              <button className="header__logout" >
                 Log out
               </button>
             </div>

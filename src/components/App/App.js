@@ -23,77 +23,63 @@ function App() {
     phone: "",
     profilePicture: "",
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
-  const [token, setToken] = useState(localStorage.getItem("jwt"));
+  const [birthDate, setBirthDate] = useState("");
 
   const [km, setKm] = useState("");
 
   const history = useHistory();
 
-  useEffect(() => {
-    if (token) {
-      api
-        .checkToken(token)
-        .then((res) => {
-          if (res) {
-            setFullName(res.fullName);
-            setIsLoggedIn(true);
-            history.push("/");
-          } else {
-            localStorage.removeItem("jwt");
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
+  //useEffect(() => {
+  //if (token) {
+  // api
+  // .checkToken(token)
+  // .then((res) => {
+  // if (res) {
+  //setFullName(res.fullName);
+  //setIsLoggedIn(true);
+  //history.push("/");
+  //} else {
+  // localStorage.removeItem("jwt");
+  //  }
+  // })
+  //.catch((err) => console.log(err));
+  //}
+  // }, []);
 
-  useEffect(() => {
-    api
-      .getUserInfo(token)
-      .then((res) => {
-        setSelectedPerson(res);
-        setPersonLocation(res);
-      })
-      .catch(console.log);
-  }, [token]);
-
-  //useEffect(() =>{
-  //location
-  //.getCurrentPosition()
-  //.then((res) =>{
-  //setPersonLocation(res.user)
+  // useEffect(() => {
+  //api
+  // .getUserInfo(token)
+  //.then((res) => {
+  // setSelectedPerson(res);
+  // setPersonLocation(res);
   //})
-  //}, [])
+  // .catch(console.log);
+  // }, [token]);
 
-  //function handleDeleteClick(card) {
-  //setIsDeletePopupOpen(true);
-  //setSelectedCard(card);
+  //function handleUpdateUser({ fullName, birthDate, phone, profilePicture }) {
+  // api
+  // .setUserInfo({ fullName, birthDate, phone, profilePicture })
+  // .then((data) => {
+  // setCurrentUser(data);
+  // })
+  // .catch(console.log);
   //}
 
-  function handleUpdateUser({ fullName, birthDate, phone, profilePicture }) {
-    api
-      .setUserInfo({ fullName, birthDate, phone, profilePicture }, token)
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch(console.log);
-  }
-
-  function handlePersonDelete(e) {
-    e.preventDefault();
-    //setIsLoading(true);
-    api
-      .deletePerson(selectedPerson._id, token)
-      .then(() => {
-        setPersons((persons) =>
-          persons.filter(
-            (currentUser) => currentUser._id !== selectedPerson._id
-          )
-        );
-      })
-      .catch(console.log);
-  }
+  //function handlePersonDelete(e) {
+  //e.preventDefault();
+  // api
+  // .deletePerson(selectedPerson._id)
+  //.then(() => {
+  //setPersons((persons) =>
+  //persons.filter(
+  // (currentUser) => currentUser._id !== selectedPerson._id
+  //)
+  // );
+  //})
+  // .catch(console.log);
+  // }
 
   function onRegister({ fullName, birthDate, phone, profilePicture }) {
     api
@@ -112,14 +98,11 @@ function App() {
     api
       .login({ fullName })
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem("jwt", res.token);
-          setToken(res.token);
-          setIsLoggedIn(true);
+        if (res) {
           setFullName(fullName);
           history.push("/");
           return res;
-        } 
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -134,56 +117,21 @@ function App() {
     navigator.geolocation.getCurrentPosition(sucessfulLookup, error);
   }
 
-
-  //function handleSearchSubmit(km) {
-  // setIsSearchResultOpen(false);
-  //setIsNothingFoundOpen(false);
-  //arrayForHoldingPersons = [];
-  // setIsPreloaderOpen(true);
-
-  //setIsReceivingError(false);
-  //setKm(km);
-
-  // locationApi
-  // .getPersons(km)
-  // .then((persons) => {
-  // setIsPreloaderOpen(false);
-  //if (cards.totalResults !== 0) {
-  // setIsSearchResultOpen(true);
-  // setPersons(persons.info);
-  //} else if (persons.totalResults === 0) {
-  //setIsNothingFoundOpen(true);
-  // }
-  //})
-  //.catch((err) => {
-  // console.log(err);
-  //setIsReceivingError(true);
-  // });
-  //}
-
-  function onLogOut() {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    history.push("/signin");
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        <Header fullName={fullName} onLogOut={onLogOut} />
+        <Header fullName={fullName} />
         <Switch>
-          <ProtectedRoute exact path="/" loggedIn={isLoggedIn}>
-            <Main onDelete={handlePersonDelete} />
+          <ProtectedRoute exact path="/">
+            <Main />
           </ProtectedRoute>
           <Route path="/signup">
             <Register onRegister={onRegister} />
           </Route>
           <Route path="/signin">
-            <Login onLogIn={onLogIn} getLocation={getLocation}/>
+            <Login onLogIn={onLogIn} getLocation={getLocation} />
           </Route>
-          <Route>
-            {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/signin" />}
-          </Route>
+          <Route></Route>
         </Switch>
         <Footer />
       </div>

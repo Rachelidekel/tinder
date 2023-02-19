@@ -3,14 +3,20 @@ import { Link } from "react-router-dom";
 
 function Login({ onLogIn, getLocation }) {
   const [fullName, setFullName] = useState("");
-  
+  const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+
   function handleSubmit(e) {
     e.preventDefault();
     const userData = {
-      fullName
+      fullName,
     };
     onLogIn(userData);
-    getLocation()
+    setBirthDate(true);
+    setPhone(true);
+    setProfilePicture(true);
+    getLocation();
   }
 
   return (
@@ -18,20 +24,18 @@ function Login({ onLogIn, getLocation }) {
       <h3 className="auth__title">Log in</h3>
       <form className="auth__form" onSubmit={handleSubmit}>
         <p>
-        <label>
-          Full Name
-          </label>
-        <input
-          type="name"
-          name="name"
-          className="auth__input"
-          id="auth__name"
-          value={fullName || ""}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
+          <label>Full Name</label>
+          <input
+            type="name"
+            name="name"
+            className="auth__input"
+            id="auth__name"
+            value={fullName || ""}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
         </p>
-      
+
         <button className="auth__button" type="submit">
           Log in
         </button>
