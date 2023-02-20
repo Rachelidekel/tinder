@@ -26,60 +26,13 @@ function App() {
   //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [fullName, setFullName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const [location, setLocation] = useState("");
 
-  const [km, setKm] = useState("");
+  //const [km, setKm] = useState("");
 
   const history = useHistory();
-
-  //useEffect(() => {
-  //if (token) {
-  // api
-  // .checkToken(token)
-  // .then((res) => {
-  // if (res) {
-  //setFullName(res.fullName);
-  //setIsLoggedIn(true);
-  //history.push("/");
-  //} else {
-  // localStorage.removeItem("jwt");
-  //  }
-  // })
-  //.catch((err) => console.log(err));
-  //}
-  // }, []);
-
-  // useEffect(() => {
-  //api
-  // .getUserInfo(token)
-  //.then((res) => {
-  // setSelectedPerson(res);
-  // setPersonLocation(res);
-  //})
-  // .catch(console.log);
-  // }, [token]);
-
-  //function handleUpdateUser({ fullName, birthDate, phone, profilePicture }) {
-  // api
-  // .setUserInfo({ fullName, birthDate, phone, profilePicture })
-  // .then((data) => {
-  // setCurrentUser(data);
-  // })
-  // .catch(console.log);
-  //}
-
-  //function handlePersonDelete(e) {
-  //e.preventDefault();
-  // api
-  // .deletePerson(selectedPerson._id)
-  //.then(() => {
-  //setPersons((persons) =>
-  //persons.filter(
-  // (currentUser) => currentUser._id !== selectedPerson._id
-  //)
-  // );
-  //})
-  // .catch(console.log);
-  // }
 
   function onRegister({ fullName, birthDate, phone, profilePicture }) {
     api
@@ -117,6 +70,18 @@ function App() {
     navigator.geolocation.getCurrentPosition(sucessfulLookup, error);
   }
 
+  function updateUser({ data, location }) {
+    api.updateUser({ data }).then((res) => {
+      if (res) {
+        setFullName(fullName);
+        setBirthDate(birthDate);
+        setPhone(phone);
+        setProfilePicture(profilePicture);
+        getLocation(location);
+      }
+    });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -129,7 +94,15 @@ function App() {
             <Register onRegister={onRegister} />
           </Route>
           <Route path="/signin">
-            <Login onLogIn={onLogIn} getLocation={getLocation} />
+            <Login
+              onLogIn={onLogIn}
+              updateUser={updateUser}
+              fullName={fullName}
+              birthDate={birthDate}
+              phone={phone}
+              profilePicture={profilePicture}
+              location={location}
+            />
           </Route>
           <Route></Route>
         </Switch>

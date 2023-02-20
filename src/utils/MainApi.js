@@ -21,36 +21,35 @@ class Api {
     });
   };
 
-  login = ({ fullName, birthDate, phone, profilePicture }) => {
+  login = ({ fullName }) => {
     return this._customFetch(`${this._baseUrl}`, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ fullName, birthDate, phone, profilePicture }),
+      body: JSON.stringify({ fullName }),
     });
   };
 
-  //createUser(data, token) {
-  //return this._customFetch(`${this._baseUrl}/`, {
-  // headers: {
-  //"Content-Type": "application/json",
-  // Authoriztion: `Bearer ${token}`,
-  //},
-  // method: "POST",
-  //body: JSON.stringify({
-  // birthDate: data.birthDate,
-  //fullName: data.fullName,
-  //location: data.location,
-  //phone: data.phone,
-  // profilePicture: data.profilePicture,
-  //}),
-  //});
-  //}
+  updateUser({ id, location, fullName, birthDate, phone, profilePicture }) {
+    return this._customFetch(`${this._baseUrl}/${id}/${location}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify({
+        fullName: fullName,
+        birthDate: birthDate,
+        phone: phone,
+        profilePicture: profilePicture,
+        location: location,
+      }),
+    });
+  }
 
   getPersonsByDistance({ byDistance }) {
-    return this._customFetch(`${this._baseUrl}/ ${byDistance}`, {
+    return this._customFetch(`${this._baseUrl}/${byDistance}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -58,11 +57,10 @@ class Api {
     });
   }
 
-  deletePerson(id, token) {
+  deletePerson(id) {
     return this._customFetch(`${this._baseUrl}/${id}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       method: "DELETE",
     });

@@ -1,22 +1,19 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Login({ onLogIn, getLocation }) {
+function Login({ onLogIn, updateUser, birthDate, phone, profilePicture, location }) {
   const [fullName, setFullName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [phone, setPhone] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    const userData = {
+    const data = {
       fullName,
+      birthDate,
+      phone,
+      profilePicture,
     };
-    onLogIn(userData);
-    setBirthDate(true);
-    setPhone(true);
-    setProfilePicture(true);
-    getLocation();
+    //onLogIn(fullName);
+    updateUser(data, location);
   }
 
   return (
